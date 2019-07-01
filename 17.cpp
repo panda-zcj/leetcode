@@ -8,7 +8,7 @@
  * @brief    
  * @version  0.0.1
  * 
- * Last Modified:  2019-03-19
+ * Last Modified:  2019-06-28
  * Modified By:    詹长建 (2233930937@qq.com)
  * 
  */
@@ -43,7 +43,7 @@ public:
             return vector<string>();
         }else{
             map<char,string> keyboard;
-            keyboard.insert(pair<char,string>('2',"abc"));
+            keyboard.insert(pair<char,string>('2',"abc")); //该层有abc三个元素可选
             keyboard.insert(pair<char,string>('3',"def"));
             keyboard.insert(pair<char,string>('4',"ghi"));
             keyboard.insert(map<char,string>::value_type('5',"jkl"));
@@ -56,9 +56,9 @@ public:
             vector<string> alphabet;
             int deep = 0,  layerNumber=length-1,  layer[length]={0};
             while (deep >=0 ) { 
-                if (layer[deep] < keyboard.at(digits.at(deep)).size() ) {
+                if (layer[deep] < keyboard.at(digits.at(deep)).size() ) {//判断该层第layer[deep]个元素是否超出该层可选取元素个数
                     word.push_back(keyboard.at(digits.at(deep)).at(layer[deep]));
-                    layer[deep]++;//该层的节点数目
+                    layer[deep]++;//下次该层的第layer[deep]个元素
                     if(deep < layerNumber){
                         deep++;
                     }else{

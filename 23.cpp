@@ -8,7 +8,7 @@
  * @brief    
  * @version  0.0.1
  * 
- * Last Modified:  2019-01-24
+ * Last Modified:  2019-06-20
  * Modified By:    詹长建 (2233930937@qq.com)
  * 
  */
@@ -32,6 +32,7 @@
 #include <map>
 #include <string>
 #include <cmath>
+#include <queue>
 using namespace std;
 
 struct ListNode {
@@ -40,6 +41,7 @@ struct ListNode {
     ListNode(int x) : val(x), next(NULL) {}
 };
 
+#if false
 class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
@@ -81,3 +83,65 @@ public:
         return li;
     }
 };
+#elif false
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        if(lists.size() > 1){
+            ListNode  list_start(0), *tmp=&list_start;
+            int min,index,j;
+            while(true)
+            {        
+                index=0;
+                min=INT_MAX;
+                for(int i=0;i<lists.size();i++){  
+                    if(lists.at(i)){
+                        if(lists.at(i)->val < min){
+                            min=lists.at(i)->val;
+                            j=i;
+                        }
+                    }else
+                    {
+                        index++;
+                        if(index==lists.size()){
+                            return list_start.next;
+                        }
+                    } 
+                }
+                tmp->next=lists.at(j);
+                tmp=lists.at(j);
+                lists.at(j)=lists.at(j)->next;  
+            }
+        }else if(lists.size() == 1){
+            return lists.front();
+        }
+        return NULL;
+    }
+};
+#else
+class Solution {
+public:
+    struct Cmp{
+        bool operator()(struct ListNode *a , struct ListNode *b) {
+            return a->val > b->val;
+        }
+    };
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        priority_queue<ListNode* ,vector<ListNode*>,  Cmp> list;
+        for(auto &node : lists){
+            if(node)
+                list.push(node);
+        }
+        ListNode li(0),*mlist=&li;
+        while(!list.empty()){
+            mlist->next=list.top();
+            mlist=mlist->next; 
+            if(list.top()->next){
+                list.push(list.top()->next);
+            }
+            list.pop();
+        }
+        return li.next;
+    }
+};
+#endif
